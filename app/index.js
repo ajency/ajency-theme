@@ -4,7 +4,7 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
-var WpGruntedThemeGenerator = module.exports = function WpGruntedThemeGenerator(args, options, config) {
+var AjencyWpThemeGenerator = module.exports = function AjencyWpThemeGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
 
     this.on('end', function() {
@@ -35,9 +35,9 @@ var WpGruntedThemeGenerator = module.exports = function WpGruntedThemeGenerator(
     this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 };
 
-util.inherits(WpGruntedThemeGenerator, yeoman.generators.Base);
+util.inherits(AjencyWpThemeGenerator, yeoman.generators.Base);
 
-WpGruntedThemeGenerator.prototype.askFor = function askFor() {
+AjencyWpThemeGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
     console.log("Ajency.in Logo/Name comming soon :P");
@@ -111,7 +111,7 @@ WpGruntedThemeGenerator.prototype.askFor = function askFor() {
     }.bind(this));
 };
 
-WpGruntedThemeGenerator.prototype.app = function app() {
+AjencyWpThemeGenerator.prototype.app = function app() {
     var currentDate = new Date()
     this.themeCreated = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
 
