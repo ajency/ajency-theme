@@ -4,7 +4,7 @@
     "description": "Yeoman generator",
     "license": "MIT",
     "main": "app/index.js",
-    "repository": "surajajency/generator-ajency-theme",
+    "repository": "surajajency/ajency-theme",
     "author": {
         "name": "Suraj",
         "email": "suraj@ajency.in",

@@ -7,5 +7,5 @@ describe "ajency-theme generator", ->
 
     it "can be imported without blowing up", ->
 
-        app = require("../app")
+        app = require "../app"
         assert app isnt 'undefined'
