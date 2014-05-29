@@ -2,47 +2,47 @@
 /**
  * <%= themeName %> template for displaying Pages
  *
- * @package WordPress
+ * @package    WordPress
  * @subpackage <%= themeName %>
- * @since <%= themeName %> 1.0
+ * @since      <%= themeName %> 1.0
  */
 
 get_header(); ?>
 
-	<section class="page-content primary" role="main">
+    <section class="page-content primary" role="main">
 
-		<?php
-			if ( have_posts() ) : the_post();
+        <?php
+        if ( have_posts() ) : the_post();
 
-				get_template_part( 'loop' ); ?>
+            get_template_part( 'loop' ); ?>
 
-				<aside class="post-aside"><?php
+            <aside class="post-aside"><?php
 
-					wp_link_pages(
-						array(
-							'before'           => '<div class="linked-page-nav"><p>' . sprintf( __( '<em>%s</em> is separated in multiple parts:', '<%= themeNameSpace %>' ), get_the_title() ) . '<br />',
-							'after'            => '</p></div>',
-							'next_or_number'   => 'number',
-							'separator'        => ' ',
-							'pagelink'         => __( '&raquo; Part %', '<%= themeNameSpace %>' ),
-						)
-					); ?>
+            wp_link_pages(
+                array(
+                    'before'         => '<div class="linked-page-nav"><p>' . sprintf( __( '<em>%s</em> is separated in multiple parts:', '<%= themeNameSpace %>' ), get_the_title() ) . '<br />',
+                    'after'          => '</p></div>',
+                    'next_or_number' => 'number',
+                    'separator'      => ' ',
+                    'pagelink'       => __( '&raquo; Part %', '<%= themeNameSpace %>' ),
+                )
+            ); ?>
 
-					<?php
-						if ( comments_open() || get_comments_number() > 0 ) :
-							comments_template( '', true );
-						endif;
-					?>
+            <?php
+            if ( comments_open() || get_comments_number() > 0 ) :
+                comments_template( '', TRUE );
+            endif;
+            ?>
 
-				</aside><?php
+            </aside><?php
 
-			else :
+        else :
 
-				get_template_part( 'loop', 'empty' );
+            get_template_part( 'loop', 'empty' );
 
-			endif;
-		?>
+        endif;
+        ?>
 
-	</section>
+    </section>
 
 <?php get_footer(); ?>

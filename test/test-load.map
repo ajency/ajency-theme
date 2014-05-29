@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "test-load.js",
+  "sourceRoot": "",
+  "sources": [
+    "test-load.coffee"
+  ],
+  "names": [],
+  "mappings": ";AACA,YAAA,CAAA;AAAA,IAAA,MAAA;;AAAA,MAEA,GAAS,OAAA,CAAQ,QAAR,CAFT,CAAA;;AAAA,QAIA,CAAS,wBAAT,EAAmC,SAAA,GAAA;SAE/B,EAAA,CAAG,oCAAH,EAAyC,SAAA,GAAA;AAErC,QAAA,GAAA;AAAA,IAAA,GAAA,GAAM,OAAA,CAAQ,QAAR,CAAN,CAAA;WACA,MAAA,CAAO,GAAA,KAAS,WAAhB,EAHqC;EAAA,CAAzC,EAF+B;AAAA,CAAnC,CAJA,CAAA"
+}

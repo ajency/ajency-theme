@@ -24,7 +24,8 @@
     "karma-chrome-launcher": "~0.1.4",
     "karma-firefox-launcher": "~0.1.3",
     "karma-requirejs": "~0.2.2",
-    "grunt-coffeelint": "0.0.10"
+    "grunt-coffeelint": "0.0.10",
+    "jshint-stylish": "~0.2.0"
   },
   "description": "Package json for <%= themeNameSpace %>",
   "main": "Gruntfile.coffee",
@@ -49,7 +50,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "<%= githubRepo %>"
+    "url": "<%= githubRepo %>.git"
   },
   "keywords": [
     "<%= themeNameSpace %>"

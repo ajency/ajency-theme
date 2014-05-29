@@ -25,6 +25,7 @@ module.exports = (grunt) ->
             options :
                 jshintrc : '.jshintrc'
                 jshintignore : '.jshintignore'
+                reporter : require 'jshint-stylish'
             themeJS : []
             SPAJS : []
 

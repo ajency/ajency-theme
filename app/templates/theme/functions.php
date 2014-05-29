@@ -58,6 +58,9 @@ if ( is_development_environment() ) {
             get_template_directory_uri() . "/js/{$module}.scripts.js",
             array( "require-config" ) );
 
+        // TODO: Add support for GLOBAL variables like, AJAXURL, SITEURL
+        // TODO: Decide on basic global variales required for all projects
+
     }
 
     add_action( 'wp_enqueue_scripts', '<%= themeNameSpace %>_dev_enqueue_scripts' );

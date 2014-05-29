@@ -2,9 +2,9 @@
 /**
  * <%= themeName %> template for displaying the Loop for the Status-Post-Format
  *
- * @package WordPress
+ * @package    WordPress
  * @subpackage <%= themeName %>
- * @since <%= themeName %> 1.0
+ * @since      <%= themeName %> 1.0
  */
 ?>
 
