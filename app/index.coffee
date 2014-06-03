@@ -7,11 +7,10 @@ chalk = require("chalk")
 
 AjencyWpThemeGenerator = yeoman.generators.Base.extend
 
-    init: ->
+    init : ->
         @pkg = require("../package.json")
 
         @on "end", ->
-
             if @themeNameSpace
                 process.chdir @themeNameSpace + "/grunt/"
                 @installDependencies
@@ -33,8 +32,7 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
                     ).bind(this)
 
 
-    askFor: ->
-
+    askFor : ->
         cb = @async()
 
         console.log "Ajency.in Logo/Name comming soon :P"
@@ -116,7 +114,6 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
         ).bind(this)
 
     app : ->
-
         currentDate = new Date()
 
         @themeCreated = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate()

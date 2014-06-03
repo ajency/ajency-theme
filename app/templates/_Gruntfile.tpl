@@ -75,7 +75,6 @@ module.exports = (grunt) ->
         # Automatically builds and maintains your spec runner and runs your tests headlessly through PhantomJS.
         karma :
             options :
-                runnerPort : 9999
                 browsers : ['Chrome']
                 singleRun : true
             themeJS :

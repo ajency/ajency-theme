@@ -1,6 +1,6 @@
 # Ajency Theme Scaffolding tool
 
-[![Build Status](https://secure.travis-ci.org/surajajency/generator-ajency-theme.png?branch=master)](https://travis-ci.org/surajajency/generator-ajency-theme)
+[![Build Status](https://travis-ci.org/surajajency/ajency-theme.svg?branch=master)](https://travis-ci.org/surajajency/ajency-theme)
 
 > [Yeoman](http://yeoman.io) generator
 

@@ -137,5 +137,3 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
 });
 
 module.exports = AjencyWpThemeGenerator;
-
-//# sourceMappingURL=index.map
