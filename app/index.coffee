@@ -8,29 +8,32 @@ chalk = require("chalk")
 AjencyWpThemeGenerator = yeoman.generators.Base.extend
 
     init : ->
+
         @pkg = require("../package.json")
+
+        afterNPMInstallComplete = =>
+            process.chdir "../js/"
+            console.log "Installing theme bower components"
+            @installDependencies
+                skipInstall : @options["skip-install"]
+                npm : false
+                callback : afterThemeBowerInstallComplete
+
+        afterThemeBowerInstallComplete = =>
+            process.chdir "../SPA/"
+            console.log "Installing SPA bower components"
+            @installDependencies
+                skipInstall : @options["skip-install"]
+                npm : false
 
         @on "end", ->
             if @themeNameSpace
                 process.chdir @themeNameSpace + "/grunt/"
+                console.log "Installing grunt modules"
                 @installDependencies
-                    skipInstall : options["skip-install"]
+                    skipInstall : @options["skip-install"]
                     bower : false
-                    callback : (->
-                        process.chdir "../js/"
-                        @installDependencies
-                            skipInstall : options["skip-install"]
-                            npm : false
-                            callback : (->
-                                process.chdir "../SPA/"
-                                @installDependencies
-                                    skipInstall : options["skip-install"]
-                                    npm : false
-
-                            ).bind(this)
-
-                    ).bind(this)
-
+                    callback : afterNPMInstallComplete
 
     askFor : ->
         cb = @async()
@@ -51,20 +54,17 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
             {
                 name : "themeAuthor"
                 message : "Name of the themes author?"
-                default : () ->
-                    "Team Ajency"
+                default : "Team Ajency"
             }
             {
                 name : "themeAuthorURI"
                 message : "Website of the themes authors?"
-                default : () ->
-                    "http://ajency.in/team"
+                default : "http://ajency.in/team"
             }
             {
                 name : "themeURI"
                 message : "Website of the theme?"
-                default : () ->
-                    "http://ajency.in/"
+                default : "http://ajency.in/"
             }
             {
                 type : "checkbox"
@@ -82,19 +82,9 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
                     "This is a description for the " + answers.themeName + " theme."
             }
             {
-                name : "phpcsPath"
-                message : "PHP Code Sniffer path?"
-                default : "/usr/bin/phpcs"
-            }
-            {
-                name : "phpUnitPath"
-                message : "PHP unit path?"
-                default : "/usr/bin/phpunit"
-            }
-            {
                 name : "githubRepo"
-                message : "Github repository path"
-                default : ""
+                message : "Github repository path( http://github.com/ajency/impruw )"
+                default : "http://github.com/ajency/*"
             }
         ]
         @prompt prompts, ((props) ->
@@ -105,8 +95,6 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
             @themeURI = props.themeURI
             @themeTags = props.themeTags
             @themeTags = props.themeTags
-            @phpcsPath = props.phpcsPath
-            @phpUnitPath = props.phpUnitPath
             @githubRepo = props.githubRepo
             @jshintTag = "<%= jshint.all %>"
             cb()

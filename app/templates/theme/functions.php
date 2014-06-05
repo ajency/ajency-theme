@@ -4,7 +4,7 @@
  *
  * @package    WordPress
  * @subpackage <%= themeNameSpace %>
- * @since      <%= themeNameSpace %> 1.0
+ * @since      <%= themeNameSpace %> 0.0.1
  */
 
 function <%= themeNameSpace %>_theme_setup() {
@@ -38,29 +38,40 @@ function <%= themeNameSpace %>_after_init() {
 add_action( 'init', '<%= themeNameSpace %>_after_init' );
 
 
-if ( is_development_environment() ) {
+if (is_development_environment()) {
 
     function <%= themeNameSpace %>_dev_enqueue_scripts() {
-
-        wp_enqueue_script( "requirejs",
-            get_template_directory_uri() . "/js/bower_components/requirejs/require.js",
-            array(),
-            get_current_version(),
-            TRUE );
-
-        wp_enqueue_script( "require-config",
-            get_template_directory_uri() . "/js/require.config.js",
-            array( "requirejs" ) );
-
+        // TODO: handle with better logic to define patterns and folder names
         $module = get_module_name();
 
+        $pattern = 'scripts';
+        $folder_name = 'js';
+
+        if (is_single_page_app( $module )){
+            $pattern =  'spa';
+            $folder_name = 'SPA';
+        }
+
+        wp_enqueue_script( "requirejs",
+                            get_template_directory_uri() . "/js/bower_components/requirejs/require.js",
+                            array(),
+                            get_current_version(),
+                            TRUE );
+
+        wp_enqueue_script( "require-config",
+                            get_template_directory_uri() . "/{$folder_name}/require.config.js",
+                            array( "requirejs" ) );
+
+
         wp_enqueue_script( "$module-script",
-            get_template_directory_uri() . "/js/{$module}.scripts.js",
-            array( "require-config" ) );
+                            get_template_directory_uri() . "/{$folder_name}/{$module}.{$pattern}.js",
+                            array( "require-config" ) );
 
-        // TODO: Add support for GLOBAL variables like, AJAXURL, SITEURL
-        // TODO: Decide on basic global variales required for all projects
-
+        // localized variables
+        wp_localize_script( "requirejs", "SITEURL", site_url() );
+        wp_localize_script( "requirejs", "AJAXURL", admin_url( "admin-ajax.php" ) );
+        wp_localize_script( "requirejs", "UPLOADURL", admin_url( "async-upload.php" ) );
+        wp_localize_script( "requirejs", "_WPNONCE", wp_create_nonce( 'media-form' ) );
     }
 
     add_action( 'wp_enqueue_scripts', '<%= themeNameSpace %>_dev_enqueue_scripts' );
@@ -69,28 +80,28 @@ if ( is_development_environment() ) {
 
         $module = get_module_name();
 
-        wp_enqueue_style( "$module-script", get_template_directory_uri() . "/css/{$module}.styles.css" );
+        wp_enqueue_style( "$module-style", get_template_directory_uri() . "/css/{$module}.styles.css" );
 
     }
 
     add_action( 'wp_enqueue_scripts', '<%= themeNameSpace %>_dev_enqueue_styles' );
 }
 
-if ( !is_development_environment() ) {
+if (!is_development_environment()) {
 
     function <%= themeNameSpace %>_production_enqueue_script() {
 
         $module = get_module_name();
-        $path   = get_template_directory_uri() . "/production/js/{$module}.scripts.min.js";
+        $path = get_template_directory_uri() . "/production/js/{$module}.scripts.min.js";
 
-        if ( is_single_page_app() )
+        if (is_single_page_app())
             $path = get_template_directory_uri() . "/production/spa/{$module}.spa.min.js";
 
         wp_enqueue_script( "$module-script",
-            $path,
-            array(),
-            get_current_version(),
-            TRUE );
+                            $path,
+                            array(),
+                            get_current_version(),
+                            TRUE );
 
     }
 
@@ -100,11 +111,11 @@ if ( !is_development_environment() ) {
 
         $module = get_module_name();
 
-        wp_enqueue_style( "$module-styles",
-            get_template_directory_uri() . "/production/css/{$module}.styles.min.css",
-            array(),
-            get_current_version(),
-            TRUE );
+        wp_enqueue_style( "$module-style",
+                            get_template_directory_uri() . "/production/css/{$module}.styles.min.css",
+                            array(),
+                            get_current_version(),
+                            "all" );
 
     }
 
@@ -132,10 +143,12 @@ function get_current_version() {
 
 }
 
-function is_single_page_app() {
-    // TODO: Application logic to identify if current page is a SPA
+function is_single_page_app( $module_name ) {
 
-    return FALSE;
+    // add slugs of SPA pages here
+    $spa_pages = array();
+
+    return in_array( $module_name, $spa_pages );
 
 }
 
@@ -144,10 +157,10 @@ function get_module_name() {
 
     $module = "";
 
-    // TODO: Handle with better logic here. Regex or something
+    // TODO: Handle with project specific logic here to define module names
     if ( is_page() )
         $module = sanitize_title( get_the_title() );
 
-
     return $module;
+
 }

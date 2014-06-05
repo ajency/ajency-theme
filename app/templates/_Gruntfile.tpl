@@ -47,7 +47,6 @@ module.exports = (grunt) ->
         # It can also help prevent some common semantic errors made by developers.
         phpcs :
             options :
-                bin : "<%= phpcsPath %>"
                 standard : "Wordpress"
             theme :
                 dir : ["../*.php", "../**/*.php"]
@@ -60,7 +59,6 @@ module.exports = (grunt) ->
         # It is an instance of the xUnit architecture for unit testing frameworks.
         phpunit :
             options :
-                bin : "<%= phpUnitPath %>"
                 bootstrap : "../../../../tests/includes/bootstrap.php"
                 colors : true
             theme :
@@ -75,7 +73,7 @@ module.exports = (grunt) ->
         # Automatically builds and maintains your spec runner and runs your tests headlessly through PhantomJS.
         karma :
             options :
-                browsers : ['Chrome']
+                browsers : ['PhantomJS']
                 singleRun : true
             themeJS :
                 configFile : "../js/tests/karma.conf.js"
@@ -206,26 +204,26 @@ module.exports = (grunt) ->
     # create the subtasks for the require js optimizer
     getRequireJSTasks = (files, pattern)->
         subTasks = {}
+        folderName = if pattern is 'scripts' then 'js' else 'SPA'
         originalExtension = "#{pattern}.js"
         optimizedExtension = "#{pattern}.min.js"
         files.map (file)->
             config =
-                baseUrl : "../js/"
-                mainConfigFile : "../js/require.config.js"
-                name : "../js/bower_components/almond/almond.js"
+                baseUrl : "../#{folderName}/"
+                mainConfigFile : "../#{folderName}/require.config.js"
+                name : "../#{folderName}/bower_components/almond/almond.js"
                 include : [file]
                 out : file.replace originalExtension, optimizedExtension
                 findNestedDependencies : true
-                optimize : 'none' # uncomment for testing minified JS
+                #optimize : 'none' # uncomment for testing minified JS
 
-            # get the module/page name
-            file = file.replace "../js/", ""
-            name = file.replace ".#{pattern}.js", ""
+        # get the module/page name
+        file = file.replace "../#{folderName}/", ""
+        name = file.replace ".#{pattern}.js", ""
 
-            # set the task
-            subTasks[name] = {}
-            subTasks[name]["options"] = config
-
+        # set the task
+        subTasks[name] = {}
+        subTasks[name]["options"] = config
         subTasks
 
     # helper commands to run series of tasks

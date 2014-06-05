@@ -14,27 +14,37 @@ chalk = require("chalk");
 
 AjencyWpThemeGenerator = yeoman.generators.Base.extend({
   init: function() {
+    var afterNPMInstallComplete, afterThemeBowerInstallComplete;
     this.pkg = require("../package.json");
+    afterNPMInstallComplete = (function(_this) {
+      return function() {
+        process.chdir("../js/");
+        console.log("Installing theme bower components");
+        return _this.installDependencies({
+          skipInstall: _this.options["skip-install"],
+          npm: false,
+          callback: afterThemeBowerInstallComplete
+        });
+      };
+    })(this);
+    afterThemeBowerInstallComplete = (function(_this) {
+      return function() {
+        process.chdir("../SPA/");
+        console.log("Installing SPA bower components");
+        return _this.installDependencies({
+          skipInstall: _this.options["skip-install"],
+          npm: false
+        });
+      };
+    })(this);
     return this.on("end", function() {
       if (this.themeNameSpace) {
         process.chdir(this.themeNameSpace + "/grunt/");
+        console.log("Installing grunt modules");
         return this.installDependencies({
-          skipInstall: options["skip-install"],
+          skipInstall: this.options["skip-install"],
           bower: false,
-          callback: (function() {
-            process.chdir("../js/");
-            return this.installDependencies({
-              skipInstall: options["skip-install"],
-              npm: false,
-              callback: (function() {
-                process.chdir("../SPA/");
-                return this.installDependencies({
-                  skipInstall: options["skip-install"],
-                  npm: false
-                });
-              }).bind(this)
-            });
-          }).bind(this)
+          callback: afterNPMInstallComplete
         });
       }
     });
@@ -56,21 +66,15 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
       }, {
         name: "themeAuthor",
         message: "Name of the themes author?",
-        "default": function() {
-          return "Team Ajency";
-        }
+        "default": "Team Ajency"
       }, {
         name: "themeAuthorURI",
         message: "Website of the themes authors?",
-        "default": function() {
-          return "http://ajency.in/team";
-        }
+        "default": "http://ajency.in/team"
       }, {
         name: "themeURI",
         message: "Website of the theme?",
-        "default": function() {
-          return "http://ajency.in/";
-        }
+        "default": "http://ajency.in/"
       }, {
         type: "checkbox",
         name: "themeTags",
@@ -83,17 +87,9 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
           return "This is a description for the " + answers.themeName + " theme.";
         }
       }, {
-        name: "phpcsPath",
-        message: "PHP Code Sniffer path?",
-        "default": "/usr/bin/phpcs"
-      }, {
-        name: "phpUnitPath",
-        message: "PHP unit path?",
-        "default": "/usr/bin/phpunit"
-      }, {
         name: "githubRepo",
-        message: "Github repository path",
-        "default": ""
+        message: "Github repository path( http://github.com/ajency/impruw )",
+        "default": "http://github.com/ajency/*"
       }
     ];
     return this.prompt(prompts, (function(props) {
@@ -104,8 +100,6 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
       this.themeURI = props.themeURI;
       this.themeTags = props.themeTags;
       this.themeTags = props.themeTags;
-      this.phpcsPath = props.phpcsPath;
-      this.phpUnitPath = props.phpUnitPath;
       this.githubRepo = props.githubRepo;
       this.jshintTag = "<%= jshint.all %>";
       return cb();

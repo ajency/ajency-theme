@@ -8,7 +8,7 @@ yeoman = require("yeoman-generator");
 
 ModuleGenerator = yeoman.generators.NamedBase.extend({
   init: function(args) {
-    return console.log("You called the module subgenerator with the argument " + arguments[1]);
+    return console.log("You called the module subgenerator with the argument " + arguments[0]);
   }
 });
 

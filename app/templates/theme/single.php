@@ -4,7 +4,7 @@
  *
  * @package    WordPress
  * @subpackage <%= themeName %>
- * @since      <%= themeName %> 1.0
+ * @since      <%= themeName %> 0.0.1
  */
 
 get_header(); ?>
