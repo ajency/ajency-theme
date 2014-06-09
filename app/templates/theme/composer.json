@@ -1,0 +1,12 @@
+{
+    "name": "ajency/<%= themeName %>",
+    "description": "Composer.json for <%= themeName %>",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Team Ajency",
+            "email": "team@ajency.in"
+        }
+    ]
+}

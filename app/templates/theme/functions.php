@@ -92,10 +92,11 @@ if (!is_development_environment()) {
     function <%= themeNameSpace %>_production_enqueue_script() {
 
         $module = get_module_name();
-        $path = get_template_directory_uri() . "/production/js/{$module}.scripts.min.js";
 
-        if (is_single_page_app())
+        if (is_single_page_app( $module ))
             $path = get_template_directory_uri() . "/production/spa/{$module}.spa.min.js";
+        else
+            $path = get_template_directory_uri() . "/production/js/{$module}.scripts.min.js";
 
         wp_enqueue_script( "$module-script",
                             $path,
