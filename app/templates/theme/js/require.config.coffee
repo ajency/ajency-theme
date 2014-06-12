@@ -8,4 +8,3 @@ requirejs.config
     shim :
         jqueryvalidate : [ 'jquery' ]
         bootstrap : [ 'jquery' ]
-

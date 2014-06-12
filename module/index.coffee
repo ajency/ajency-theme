@@ -1,12 +1,41 @@
 "use strict"
-util = require("util")
+util = require "util"
+yeoman = require "yeoman-generator"
+_s = require 'underscore.string'
 
-yeoman = require("yeoman-generator")
+ModuleGenerator = yeoman.generators.Base.extend
 
-ModuleGenerator = yeoman.generators.NamedBase.extend
+    init : (args, name) ->
+        @pkg = require("../package.json")
 
-    init : (args) ->
-        console.log "You called the module subgenerator with the argument #{arguments[0]}"
+    askFor : ->
+        cb = @async()
 
+        prompts = [
+            {
+                name : "moduleName"
+                message : "Name of the module you want to create?"
+            }
+            {
+                name : "templateAuthor"
+                message : "Template author name( Format: name (email) )  "
+            }
+        ]
+
+        @prompt prompts, (props) =>
+            { @moduleName, @templateAuthor } = props
+            @slugifiedModuleName  = _s.slugify @moduleName
+            cb()
+
+    createSPAModule:->
+        # setup all files
+        @template "module.spa.coffee",  "#{@slugifiedModuleName}.spa.coffee"
+        @template "module.app.coffee",  "pages/#{@slugifiedModuleName}.app.coffee"
+        @template "template-wp.php",  "../template-#{@slugifiedModuleName}.php"
+        @template "module.styles.less",  "../css/#{@slugifiedModuleName}.styles.less"
+
+        # create a wordpress page
+        spawnCommand = require 'spawn-command'
+        spawnCommand "wp post create --post_type=page --post_status=publish --post_title='#{@moduleName}'"
 
 module.exports = ModuleGenerator

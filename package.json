@@ -1,37 +1,41 @@
 {
-    "name": "generator-ajency-theme",
-    "version": "0.0.1",
-    "description": "Yeoman generator",
-    "license": "MIT",
-    "main": "app/index.js",
-    "repository": "surajajency/ajency-theme",
-    "author": {
-        "name": "Suraj",
-        "email": "suraj@ajency.in",
-        "url": "https://github.com/surajajency"
-    },
-    "engines": {
-        "node": ">=0.10.0"
-    },
-    "scripts": {
-        "test": "mocha"
-    },
-    "files": [
-        "app",
-        "module"
-    ],
-    "keywords": [
-        "yeoman-generator"
-    ],
-    "dependencies": {
-        "yeoman-generator": "~0.16.0",
-        "chalk": "~0.4.0",
-        "yosay": "^0.1.0"
-    },
-    "devDependencies": {
-        "mocha": "*"
-    },
-    "peerDependencies": {
-        "yo": ">=1.0.0"
-    }
+  "name": "generator-ajency-theme",
+  "version": "0.0.1",
+  "description": "Yeoman generator",
+  "license": "MIT",
+  "main": "app/index.js",
+  "repository": "surajajency/ajency-theme",
+  "author": {
+    "name": "Suraj",
+    "email": "suraj@ajency.in",
+    "url": "https://github.com/surajajency"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "app",
+    "module"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "yeoman-generator": "~0.16.0",
+    "chalk": "~0.4.0",
+    "yosay": "^0.1.0"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "spawn-command": "0.0.2",
+    "underscore.string": "~2.3.3",
+    "npm": "~1.4.15",
+    "install": "~0.1.7"
+  },
+  "peerDependencies": {
+    "yo": ">=1.0.0"
+  }
 }

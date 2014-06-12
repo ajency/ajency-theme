@@ -27,7 +27,7 @@ function <%= themeNameSpace %>_theme_setup() {
 
 }
 
-add_action( 'setup_theme', '<%= themeNameSpace %>_theme_setup' );
+add_action( 'after_setup_theme', '<%= themeNameSpace %>_theme_setup' );
 
 
 function <%= themeNameSpace %>_after_init() {

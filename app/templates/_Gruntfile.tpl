@@ -1,9 +1,18 @@
 module.exports = (grunt) ->
+
     require('time-grunt')(grunt)
 
     grunt.initConfig
 
         pkg : grunt.file.readJSON "package.json"
+
+        exec :
+            themeJS :
+                command : 'coffee -w -c -b ../js/'
+            SPAJS :
+                command : 'coffee -w -c -b ../SPA/'
+            compileall :
+                command : 'coffee -c -b ../../'
 
         # LESS lint.
         # Verifies if less file are proper. Checks for any unused variables
@@ -226,9 +235,12 @@ module.exports = (grunt) ->
         subTasks[name]["options"] = config
         subTasks
 
+    grunt.registerTask "compile","Compile coffee file watcher" ,(args)->
+        grunt.task.run "exec:#{args}"
+
     # helper commands to run series of tasks
-    grunt.registerTask "validate", ["lesslint", "coffeelint" ,"jshint", "phpcs"]
+    grunt.registerTask "validate", ["lesslint", "coffeelint" , "jshint", "phpcs"]
     grunt.registerTask "runtests", ["karma", "phpunit"]
     grunt.registerTask "optimize", ["less", "themeJSOptimize", "themeSPAOptimize"]
-
+    grunt.registerTask "build", [ "themeJSOptimize", "themeSPAOptimize", "less", "clean:production", "copyto", "clean:prevBuilds"]
     grunt.registerTask "deploy", ["validate", "runtests", "optimize", "clean", "copyto", "notify:readyToDeploy"]

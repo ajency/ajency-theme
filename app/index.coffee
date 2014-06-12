@@ -84,7 +84,8 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
             {
                 name : "githubRepo"
                 message : "Github repository path( http://github.com/ajency/impruw )"
-                default : "http://github.com/ajency/*"
+                default : (answers)->
+                    "http://github.com/ajency/#{answers.themeNameSpace}"
             }
         ]
         @prompt prompts, ((props) ->
@@ -108,14 +109,29 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
 
         @directory "theme", @themeNameSpace
 
+        # create theme folders
         @mkdir @themeNameSpace + "/production"
         @mkdir @themeNameSpace + "/css/fonts"
+
+        # create theme js folders
         @mkdir @themeNameSpace + "/js/modules"
         @mkdir @themeNameSpace + "/js/tests/specs"
         @mkdir @themeNameSpace + "/js/tests/helpers"
+
+        # create grunt folder
         @mkdir @themeNameSpace + "/grunt"
+
+        # create test folders
         @mkdir @themeNameSpace + "/SPA/tests/specs"
         @mkdir @themeNameSpace + "/SPA/tests/helpers"
+
+        # create SPA folders for marionette
+        @mkdir @themeNameSpace + "/SPA/apps"
+        @mkdir @themeNameSpace + "/SPA/behaviors"
+        @mkdir @themeNameSpace + "/SPA/pages"
+        @mkdir @themeNameSpace + "/SPA/entities"
+
+        # create folders for PHP code
         @mkdir @themeNameSpace + "/classes"
         @mkdir @themeNameSpace + "/tests"
 
@@ -125,6 +141,9 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
         @template "_coffeelint.json", @themeNameSpace + "/grunt/coffeelint.json"
         @template "_jshintignore", @themeNameSpace + "/grunt/.jshintignore"
         @template "_jshintrc", @themeNameSpace + "/grunt/.jshintrc"
+
+        # move composer file
+        @template "composer.tpl", @themeNameSpace + "/composer.json"
 
         #move bower
         @template "_bower.json", @themeNameSpace + "/js/bower.json"

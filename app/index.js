@@ -89,7 +89,9 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
       }, {
         name: "githubRepo",
         message: "Github repository path( http://github.com/ajency/impruw )",
-        "default": "http://github.com/ajency/*"
+        "default": function(answers) {
+          return "http://github.com/ajency/" + answers.themeNameSpace;
+        }
       }
     ];
     return this.prompt(prompts, (function(props) {
@@ -118,6 +120,10 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
     this.mkdir(this.themeNameSpace + "/grunt");
     this.mkdir(this.themeNameSpace + "/SPA/tests/specs");
     this.mkdir(this.themeNameSpace + "/SPA/tests/helpers");
+    this.mkdir(this.themeNameSpace + "/SPA/apps");
+    this.mkdir(this.themeNameSpace + "/SPA/behaviors");
+    this.mkdir(this.themeNameSpace + "/SPA/pages");
+    this.mkdir(this.themeNameSpace + "/SPA/entities");
     this.mkdir(this.themeNameSpace + "/classes");
     this.mkdir(this.themeNameSpace + "/tests");
     this.template("_Gruntfile.tpl", this.themeNameSpace + "/grunt/Gruntfile.coffee");
@@ -125,6 +131,7 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
     this.template("_coffeelint.json", this.themeNameSpace + "/grunt/coffeelint.json");
     this.template("_jshintignore", this.themeNameSpace + "/grunt/.jshintignore");
     this.template("_jshintrc", this.themeNameSpace + "/grunt/.jshintrc");
+    this.template("composer.tpl", this.themeNameSpace + "/composer.json");
     this.template("_bower.json", this.themeNameSpace + "/js/bower.json");
     return this.template("_spa-bower.json", this.themeNameSpace + "/SPA/bower.json");
   }
