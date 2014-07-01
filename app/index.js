@@ -88,7 +88,7 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
         }
       }, {
         name: "githubRepo",
-        message: "Github repository path( http://github.com/ajency/impruw )",
+        message: "Github repository path",
         "default": function(answers) {
           return "http://github.com/ajency/" + answers.themeNameSpace;
         }

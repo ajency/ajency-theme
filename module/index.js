@@ -9,10 +9,15 @@ yeoman = require("yeoman-generator");
 _s = require('underscore.string');
 
 ModuleGenerator = yeoman.generators.Base.extend({
-  init: function(args, name) {
-    return this.pkg = require("../package.json");
+  init: function(type) {
+    if (type === void 0) {
+      console.log("Please specify the module type: theme or SPA");
+      return;
+    }
+    this.pkg = require("../package.json");
+    return this._askFor(type);
   },
-  askFor: function() {
+  _askFor: function(type) {
     var cb, prompts;
     cb = this.async();
     prompts = [
@@ -21,25 +26,40 @@ ModuleGenerator = yeoman.generators.Base.extend({
         message: "Name of the module you want to create?"
       }, {
         name: "templateAuthor",
-        message: "Template author name( Format: name (email) )  "
+        message: "Author name: name (email) "
       }
     ];
     return this.prompt(prompts, (function(_this) {
       return function(props) {
         _this.moduleName = props.moduleName, _this.templateAuthor = props.templateAuthor;
         _this.slugifiedModuleName = _s.slugify(_this.moduleName);
+        if (type === 'theme') {
+          _this._createThemeModule();
+        } else {
+          _this._createSPAModule();
+        }
         return cb();
       };
     })(this));
   },
-  createSPAModule: function() {
-    var spawnCommand;
+  _createSPAModule: function() {
+    this.template("module.scripts.coffee", "" + this.slugifiedModuleName + ".scripts.coffee");
+    this.template("template-wp.php", "../template-" + this.slugifiedModuleName + ".php");
+    this.template("module.styles.less", "../css/" + this.slugifiedModuleName + ".styles.less");
+    return this._createWPPage(this.moduleName);
+  },
+  _createThemeModule: function() {
     this.template("module.spa.coffee", "" + this.slugifiedModuleName + ".spa.coffee");
     this.template("module.app.coffee", "pages/" + this.slugifiedModuleName + ".app.coffee");
     this.template("template-wp.php", "../template-" + this.slugifiedModuleName + ".php");
     this.template("module.styles.less", "../css/" + this.slugifiedModuleName + ".styles.less");
+    return this._createWPPage(this.moduleName);
+  },
+  _createWPPage: function(moduleName) {
+    var spawnCommand;
     spawnCommand = require('spawn-command');
-    return spawnCommand("wp post create --post_type=page --post_status=publish --post_title='" + this.moduleName + "'");
+    spawnCommand("wp post create --post_type=page --post_status=publish --post_title='" + moduleName + "'");
+    return console.log("created page " + moduleName + ". Assign the template from dashboard");
   }
 });
 
