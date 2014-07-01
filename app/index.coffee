@@ -12,7 +12,7 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
         @pkg = require("../package.json")
 
         afterNPMInstallComplete = =>
-            process.chdir "../js/"
+            process.chdir "../js/src"
             console.log "Installing theme bower components"
             @installDependencies
                 skipInstall : @options["skip-install"]
@@ -20,7 +20,7 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
                 callback : afterThemeBowerInstallComplete
 
         afterThemeBowerInstallComplete = =>
-            process.chdir "../SPA/"
+            process.chdir "../spa/src"
             console.log "Installing SPA bower components"
             @installDependencies
                 skipInstall : @options["skip-install"]
@@ -114,22 +114,22 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend
         @mkdir @themeNameSpace + "/css/fonts"
 
         # create theme js folders
-        @mkdir @themeNameSpace + "/js/modules"
-        @mkdir @themeNameSpace + "/js/tests/specs"
-        @mkdir @themeNameSpace + "/js/tests/helpers"
+        @mkdir @themeNameSpace + "/js/src/modules"
+        # create test folders
+        @mkdir @themeNameSpace + "/js/spec/javascripts/specs"
+        @mkdir @themeNameSpace + "/js/spec/javascripts/fixtures"
 
         # create grunt folder
         @mkdir @themeNameSpace + "/grunt"
 
         # create test folders
-        @mkdir @themeNameSpace + "/SPA/tests/specs"
-        @mkdir @themeNameSpace + "/SPA/tests/helpers"
+        @mkdir @themeNameSpace + "/spa/spec/javascripts/specs"
+        @mkdir @themeNameSpace + "/spa/spec/javascripts/fixtures"
 
         # create SPA folders for marionette
-        @mkdir @themeNameSpace + "/SPA/apps"
-        @mkdir @themeNameSpace + "/SPA/behaviors"
-        @mkdir @themeNameSpace + "/SPA/pages"
-        @mkdir @themeNameSpace + "/SPA/entities"
+        @mkdir @themeNameSpace + "/spa/src/apps"
+        @mkdir @themeNameSpace + "/spa/src/behaviors"
+        @mkdir @themeNameSpace + "/spa/src/entities"
 
         # create folders for PHP code
         @mkdir @themeNameSpace + "/classes"

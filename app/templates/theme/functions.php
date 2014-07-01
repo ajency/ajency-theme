@@ -41,15 +41,16 @@ add_action( 'init', '<%= themeNameSpace %>_after_init' );
 if (is_development_environment()) {
 
     function <%= themeNameSpace %>_dev_enqueue_scripts() {
+
         // TODO: handle with better logic to define patterns and folder names
         $module = get_module_name();
 
-        $pattern = 'scripts';
-        $folder_name = 'js';
+        $pattern     = 'scripts';
+        $folder_path = 'js/src';
 
-        if (is_single_page_app( $module )){
-            $pattern =  'spa';
-            $folder_name = 'SPA';
+        if ( is_single_page_app( $module ) ) {
+            $pattern     = 'spa';
+            $folder_path = 'spa/src';
         }
 
         wp_enqueue_script( "requirejs",
@@ -60,12 +61,16 @@ if (is_development_environment()) {
 
         wp_enqueue_script( "require-config",
                             get_template_directory_uri() . "/{$folder_name}/require.config.js",
-                            array( "requirejs" ) );
+                            array( "requirejs" ),
+                            get_current_version(),
+                            TRUE );
 
 
         wp_enqueue_script( "$module-script",
                             get_template_directory_uri() . "/{$folder_name}/{$module}.{$pattern}.js",
-                            array( "require-config" ) );
+                            array( "require-config" ),
+                            get_current_version(),
+                            TRUE );
 
         // localized variables
         wp_localize_script( "requirejs", "SITEURL", site_url() );
@@ -103,6 +108,12 @@ if (!is_development_environment()) {
                             array(),
                             get_current_version(),
                             TRUE );
+
+        // localized variables
+        wp_localize_script( "$module-script", "SITEURL", site_url() );
+        wp_localize_script( "$module-script", "AJAXURL", admin_url( "admin-ajax.php" ) );
+        wp_localize_script( "$module-script", "UPLOADURL", admin_url( "async-upload.php" ) );
+        wp_localize_script( "$module-script", "_WPNONCE", wp_create_nonce( 'media-form' ) );
 
     }
 

@@ -18,7 +18,7 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
     this.pkg = require("../package.json");
     afterNPMInstallComplete = (function(_this) {
       return function() {
-        process.chdir("../js/");
+        process.chdir("../js/src");
         console.log("Installing theme bower components");
         return _this.installDependencies({
           skipInstall: _this.options["skip-install"],
@@ -29,7 +29,7 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
     })(this);
     afterThemeBowerInstallComplete = (function(_this) {
       return function() {
-        process.chdir("../SPA/");
+        process.chdir("../spa/src");
         console.log("Installing SPA bower components");
         return _this.installDependencies({
           skipInstall: _this.options["skip-install"],
@@ -114,16 +114,15 @@ AjencyWpThemeGenerator = yeoman.generators.Base.extend({
     this.directory("theme", this.themeNameSpace);
     this.mkdir(this.themeNameSpace + "/production");
     this.mkdir(this.themeNameSpace + "/css/fonts");
-    this.mkdir(this.themeNameSpace + "/js/modules");
-    this.mkdir(this.themeNameSpace + "/js/tests/specs");
-    this.mkdir(this.themeNameSpace + "/js/tests/helpers");
+    this.mkdir(this.themeNameSpace + "/js/src/modules");
+    this.mkdir(this.themeNameSpace + "/js/spec/javascripts/specs");
+    this.mkdir(this.themeNameSpace + "/js/spec/javascripts/fixtures");
     this.mkdir(this.themeNameSpace + "/grunt");
-    this.mkdir(this.themeNameSpace + "/SPA/tests/specs");
-    this.mkdir(this.themeNameSpace + "/SPA/tests/helpers");
-    this.mkdir(this.themeNameSpace + "/SPA/apps");
-    this.mkdir(this.themeNameSpace + "/SPA/behaviors");
-    this.mkdir(this.themeNameSpace + "/SPA/pages");
-    this.mkdir(this.themeNameSpace + "/SPA/entities");
+    this.mkdir(this.themeNameSpace + "/spa/spec/javascripts/specs");
+    this.mkdir(this.themeNameSpace + "/spa/spec/javascripts/fixtures");
+    this.mkdir(this.themeNameSpace + "/spa/src/apps");
+    this.mkdir(this.themeNameSpace + "/spa/src/behaviors");
+    this.mkdir(this.themeNameSpace + "/spa/src/entities");
     this.mkdir(this.themeNameSpace + "/classes");
     this.mkdir(this.themeNameSpace + "/tests");
     this.template("_Gruntfile.tpl", this.themeNameSpace + "/grunt/Gruntfile.coffee");

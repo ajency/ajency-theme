@@ -6,7 +6,7 @@ module.exports = function (config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: '../../js/',
+        basePath: '../../spa/',
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -14,11 +14,11 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'require.config.js',
-            'tests/test-main.js',
-            { pattern : '**/*.js', included : false },
-            { pattern : 'tests/helpers/**/*.js', included : false },
-            { pattern : 'tests/specs/*.spec.js', included : false }
+            'src/require.config.js',
+            'spec/test-main.js',
+            { pattern: 'src/**/*.js', included: false },
+            { pattern: 'spec/javascripts/helpers/**/*.js', included: false },
+            { pattern: 'spec/javascripts/specs/**/*.jspec.js', included: false }
         ],
 
         // list of files to exclude
@@ -53,7 +53,12 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['PhantomJS'],
+        browsers: ['PhantomJS', 'Chrome'],
+
+        // disable weird "no timestamp" warning
+        client: {
+            requireJsShowNoTimestampsError: false
+        },
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits

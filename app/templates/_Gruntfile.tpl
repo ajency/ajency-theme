@@ -10,7 +10,7 @@ module.exports = (grunt) ->
             themeJS :
                 command : 'coffee -w -c -b ../js/'
             SPAJS :
-                command : 'coffee -w -c -b ../SPA/'
+                command : 'coffee -w -c -b ../spa/'
             compileall :
                 command : 'coffee -c -b ../../'
 
@@ -47,7 +47,7 @@ module.exports = (grunt) ->
                     src : ["../js/*.coffee", "../js/**/*.coffee"]
             SPACoffee :
                 files :
-                    src : ["../SPA/*.coffee", "../SPA/**/*.coffee"]
+                    src : ["../spa/*.coffee", "../spa/**/*.coffee"]
 
 
         # PHP Code Sniffer
@@ -85,9 +85,9 @@ module.exports = (grunt) ->
                 browsers : ['PhantomJS']
                 singleRun : true
             themeJS :
-                configFile : "../js/tests/karma.conf.js"
+                configFile : "../js/spec/karma.conf.js"
             SPAJS :
-                configFile : "../SPA/tests/karma.conf.js"
+                configFile : "../spa/spec/karma.conf.js"
 
 
         # "TODO" list
@@ -108,7 +108,7 @@ module.exports = (grunt) ->
             themeJSTODO :
                 src : ["../js/*.coffee", "../js/**/*.coffee"]
             SPATODO :
-                src : ["../SPA/*.coffee", "../SPA/**/*.coffee"]
+                src : ["../spa/*.coffee", "../spa/**/*.coffee"]
 
 
         # Less => Css
@@ -132,7 +132,7 @@ module.exports = (grunt) ->
         # Clean production folder before new files are copied over
         clean :
             prevBuilds :
-                src : ["../css/*.styles.min.css", "../js/*.scripts.min.js", "../SPA/*.spa.min.js"]
+                src : ["../css/*.styles.min.css", "../js/src/*.scripts.min.js", "../spa/src/*.spa.min.js"]
                 options :
                     force : true
             production :
@@ -148,17 +148,17 @@ module.exports = (grunt) ->
                     (
                         cwd : "../css"
                         src : ["*.styles.min.css"]
-                        dest : "../production/css/"
+                        dest : "../production"
                     ),
                     (
-                        cwd : "../js"
+                        cwd : "../js/src"
                         src : [ "*.scripts.min.js"]
-                        dest : "../production/js/"
+                        dest : "../production"
                     ),
                     (
-                        cwd : "../SPA"
+                        cwd : "../spa/src"
                         src : [ "*.spa.min.js"]
-                        dest : "../production/spa/"
+                        dest : "../production"
                     )
                 ]
 
@@ -176,7 +176,7 @@ module.exports = (grunt) ->
     # Requirejs Optimizer
     # Optimizes the requirejs modules with r.js
     grunt.registerTask "themeJSOptimize", "Optimize the theme JS files", ->
-        files = grunt.file.expand "../js/*.scripts.js"
+        files = grunt.file.expand "../js/src/*.scripts.js"
 
         if files.length is 0
             grunt.log.write "No files to optimize"
@@ -192,7 +192,7 @@ module.exports = (grunt) ->
     # Requirejs Optimizer
     # Optimizes the requirejs modules with r.js
     grunt.registerTask "themeSPAOptimize", "Optimize the SPA JS files", ->
-        files = grunt.file.expand "../SPA/*.spa.js"
+        files = grunt.file.expand "../spa/src/*.spa.js"
 
         if files.length is 0
             grunt.log.write "No files to optimize"
@@ -213,26 +213,32 @@ module.exports = (grunt) ->
     # create the subtasks for the require js optimizer
     getRequireJSTasks = (files, pattern)->
         subTasks = {}
-        folderName = if pattern is 'scripts' then 'js' else 'SPA'
+
+        folderPath = if pattern is 'scripts' then 'js/src' else 'spa/src'
+
         originalExtension = "#{pattern}.js"
         optimizedExtension = "#{pattern}.min.js"
+
         files.map (file)->
+
+            file = file.replace "../#{folderPath}/", ""
+
             config =
-                baseUrl : "../#{folderName}/"
-                mainConfigFile : "../#{folderName}/require.config.js"
-                name : "../#{folderName}/bower_components/almond/almond.js"
+                baseUrl : "../#{folderPath}/"
+                mainConfigFile : "../#{folderPath}/require.config.js"
+                name : "bower_components/almond/almond"
                 include : [file]
-                out : file.replace originalExtension, optimizedExtension
+                out : "../#{folderPath}/#{file.replace originalExtension, optimizedExtension}"
                 findNestedDependencies : true
                 #optimize : 'none' # uncomment for testing minified JS
 
-        # get the module/page name
-        file = file.replace "../#{folderName}/", ""
-        name = file.replace ".#{pattern}.js", ""
+            # get the module/page name
+            name = file.replace ".#{pattern}.js", ""
 
-        # set the task
-        subTasks[name] = {}
-        subTasks[name]["options"] = config
+            # set the task
+            subTasks[name] = {}
+            subTasks[name]["options"] = config
+
         subTasks
 
     grunt.registerTask "compile","Compile coffee file watcher" ,(args)->
